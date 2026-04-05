@@ -1,0 +1,35 @@
+name: RunnerWingmanKMP
+options:
+  bundleIdPrefix: com.wingman
+targets:
+  RunnerWingmanKMP:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: RunnerWingmanKMP
+    settings:
+      CODE_SIGN_STYLE: Automatic
+      CURRENT_PROJECT_VERSION: 1
+      MARKETING_VERSION: 1.0
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+      ENABLE_USER_SCRIPT_SANDBOXING: NO
+      GENERATE_INFOPLIST_FILE: YES
+      INFOPLIST_KEY_UILaunchScreen_Generation: YES
+      FRAMEWORK_SEARCH_PATHS:
+        - $(inherited)
+        - "${SRCROOT}/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+      OTHER_LDFLAGS:
+        - $(inherited)
+        - "-framework"
+        - "Shared"
+    dependencies:
+      - framework: ${SRCROOT}/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)/Shared.framework
+        embed: true
+    preBuildScripts:
+      - name: Compile Kotlin shared Framework
+        script: |
+          cd "$SRCROOT/.."
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+        basedOnDependencyAnalysis: false
